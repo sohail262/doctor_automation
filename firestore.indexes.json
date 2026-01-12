@@ -1,0 +1,57 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "doctors",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "active",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "nextPostTime",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "doctors",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "active",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "nextSocialPostTime",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "appointments",
+            "queryScope": "COLLECTION_GROUP",
+            "fields": [
+                {
+                    "fieldPath": "reminderSent",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "appointmentTime",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "posts",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}
