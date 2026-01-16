@@ -1,5 +1,5 @@
 import { Timestamp } from 'firebase-admin/firestore';
-import { addDays, addWeeks, setHours, setMinutes, parseISO } from 'date-fns';
+import { addDays, addWeeks, setHours, setMinutes } from 'date-fns';
 
 export function calculateNextPostTime(
     frequency: 'daily' | 'weekly' | 'biweekly',
@@ -49,7 +49,7 @@ export function isWithinWorkingHours(
     date: Date,
     workingHours: Record<string, { start: string; end: string; enabled: boolean }>
 ): boolean {
-    const dayName = date.toLocaleDateString('en-US', { weekday: 'lowercase' });
+    const dayName = date.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
     const dayHours = workingHours[dayName];
 
     if (!dayHours || !dayHours.enabled) return false;

@@ -5,15 +5,16 @@ import { Doctor, Post } from '../types';
 import { logger } from '../utils/logger';
 import { calculateNextPostTime, selectRandomTopic } from '../utils/helpers';
 import { generatePostContent } from '../services/openai.service';
-import { generateImageFromTopic } from '../services/replicate.service';
-import { savePostToFirestore, updatePostStatus } from '../services/gmb.service';
+import { generateImageFromTopic } from '../services/gemini.service';
+import { savePostToFirestore } from '../services/gmb.service';
 
 const db = admin.firestore();
 const BATCH_SIZE = 50;
 
+
 export const socialPoster = functions.pubsub
     .topic('social-trigger')
-    .onPublish(async (message) => {
+    .onPublish(async (message: any) => {
         console.log('Social poster triggered');
 
         const now = Timestamp.now();

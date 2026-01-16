@@ -188,7 +188,7 @@ async function handleBookingRequest(
 
             if (matchingSlot) {
                 // Book the appointment
-                const appointment = await bookAppointment(
+                await bookAppointment(
                     doctorId,
                     patientName,
                     patientPhone,
@@ -305,10 +305,10 @@ async function handleConfirmRequest(
 }
 
 async function handleRescheduleRequest(
-    doctorId: string,
-    doctor: Doctor,
+    _doctorId: string,
+    _doctor: Doctor,
     patientPhone: string,
-    patientName: string
+    _patientName: string
 ): Promise<void> {
     await sendWhatsAppMessage(
         patientPhone,
@@ -317,7 +317,7 @@ async function handleRescheduleRequest(
 }
 
 async function handleInfoRequest(
-    doctorId: string,
+    _doctorId: string,
     doctor: Doctor,
     patientPhone: string
 ): Promise<void> {

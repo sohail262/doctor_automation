@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
 import * as admin from 'firebase-admin';
 import { Timestamp } from 'firebase-admin/firestore';
-import { Doctor, Appointment, CalendarConfig } from '../types';
+import { Doctor, Appointment } from '../types';
 
 const db = admin.firestore();
 
@@ -17,7 +17,7 @@ export async function getAvailableSlots(
         throw new Error('Calendar not configured');
     }
 
-    const dayName = date.toLocaleDateString('en-US', { weekday: 'lowercase' });
+    const dayName = date.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
     const workingHours = doctor.calendarConfig.workingHours[dayName];
 
     if (!workingHours?.enabled) {

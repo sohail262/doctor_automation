@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
 import * as functions from 'firebase-functions';
-import { GeneratedContent } from '../types';
+
 
 const openai = new OpenAI({
     apiKey: functions.config().openai?.key || process.env.OPENAI_API_KEY,

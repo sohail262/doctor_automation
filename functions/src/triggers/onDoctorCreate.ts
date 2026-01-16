@@ -42,6 +42,68 @@ export const onDoctorCreate = functions.firestore
                 } as any;
             }
 
+
+            // Check/Create GMB Profile
+            if (!doctor.gmbConfig?.locationId) {
+                await logger.info(doctorId, 'GMB_SETUP_START', 'Checking GMB Profile');
+
+                // For this to work, we need an access token. 
+                // In a real scenario, the doctor logs in via OAuth, saving the token.
+                // We assume doctor.gmbConfig.accessToken exists or we have a system token.
+                const accessToken = doctor.gmbConfig?.accessToken || process.env.SYSTEM_GMB_TOKEN;
+
+                if (accessToken) {
+                    const { createGMBLocation, generateWebsiteForLocation, updateLocationWebsite } = require('../services/gmb.service');
+
+                    const gmbResult = await createGMBLocation(
+                        accessToken,
+                        doctor.name,
+                        doctor.address || 'Unknown Address',
+                        doctor.specialty || 'General Practitioner'
+                    );
+
+                    if (gmbResult.success && gmbResult.locationName) {
+                        // Initialize gmbConfig if missing
+                        const currentGmbConfig = doctor.gmbConfig || {
+                            accountId: null, locationId: null, accessToken: null, refreshToken: null,
+                            connected: false, websiteUrl: null, autoReplyEnabled: true, autoPostEnabled: true
+                        };
+
+                        const newGmbConfig = {
+                            ...currentGmbConfig,
+                            locationId: gmbResult.locationName,
+                            connected: true
+                        };
+
+                        await logger.success(doctorId, 'GMB_SETUP_COMPLETE', `Created GMB Location: ${gmbResult.locationName}`);
+
+                        // Check/Create Website
+                        if (!doctor.gmbConfig?.websiteUrl) {
+                            const siteResult = await generateWebsiteForLocation(
+                                gmbResult.locationName,
+                                doctor.name,
+                                doctor.specialty
+                            );
+
+                            if (siteResult.success && siteResult.websiteUrl) {
+                                newGmbConfig.websiteUrl = siteResult.websiteUrl;
+                                await logger.success(doctorId, 'WEBSITE_GENERATED', `Generated website: ${siteResult.websiteUrl}`);
+
+                                // Link website to GMB
+                                await updateLocationWebsite(accessToken, gmbResult.locationName, siteResult.websiteUrl);
+                            }
+                        }
+
+                        updates.gmbConfig = newGmbConfig;
+
+                    } else {
+                        await logger.error(doctorId, 'GMB_SETUP_FAILED', gmbResult.error || 'Unknown error');
+                    }
+                } else {
+                    await logger.warning(doctorId, 'GMB_SETUP_SKIPPED', 'No Access Token found');
+                }
+            }
+
             if (Object.keys(updates).length > 0) {
                 await snap.ref.update(updates);
             }

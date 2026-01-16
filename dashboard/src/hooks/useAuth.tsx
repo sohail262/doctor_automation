@@ -141,7 +141,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <AuthContext.Provider
-      value= {{
+            value= {{
         user,
             doctor,
             loading,
@@ -151,12 +151,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             logout,
             forgotPassword,
             clearError,
-      }
+            }
 }
-    >
+        >
     { children }
     </AuthContext.Provider>
-  );
+    );
 };
 
 export const useAuth = (): AuthContextType => {

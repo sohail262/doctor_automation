@@ -1,5 +1,5 @@
 import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
-import * as functions from 'firebase-functions';
+
 
 const client = new SecretManagerServiceClient();
 const projectId = process.env.GCLOUD_PROJECT || process.env.GCP_PROJECT;

@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import { generatePostContent } from '../services/openai.service';
-import { generateImageFromTopic } from '../services/replicate.service';
+import { generateImageFromTopic } from '../services/gemini.service';
 
 export const generatePreview = functions.https.onCall(async (data, context) => {
     // Verify authentication

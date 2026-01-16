@@ -5,7 +5,7 @@ import { Doctor, Post } from '../types';
 import { logger } from '../utils/logger';
 import { calculateNextPostTime, selectRandomTopic } from '../utils/helpers';
 import { generatePostContent } from '../services/openai.service';
-import { generateImageFromTopic } from '../services/replicate.service';
+import { generateImageFromTopic } from '../services/gemini.service';
 import { createGMBPost, savePostToFirestore, updatePostStatus } from '../services/gmb.service';
 
 const db = admin.firestore();
